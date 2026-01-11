@@ -1,26 +1,42 @@
 import { cookies } from "next/headers";
 
-// Credenciales del admin (en producción usar variables de entorno)
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "cafecursor2024";
-const SESSION_SECRET = process.env.SESSION_SECRET || "cafe-cursor-secret-key-2024";
-
 // Nombre de la cookie de sesión
 const SESSION_COOKIE = "cafe-cursor-admin-session";
+
+/**
+ * Obtiene las credenciales del admin desde variables de entorno (lectura en runtime)
+ */
+function getAdminCredentials() {
+  const username = process.env.ADMIN_USERNAME || "admin";
+  const password = process.env.ADMIN_PASSWORD || "cafecursor2024";
+  const secret = process.env.SESSION_SECRET || "cafe-cursor-secret-key-2024";
+  return { username, password, secret };
+}
 
 /**
  * Verifica las credenciales del admin
  */
 export function verifyCredentials(username: string, password: string): boolean {
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+  const credentials = getAdminCredentials();
+  
+  // Log para depuración (remover en producción)
+  console.log(`🔑 [AUTH] Verificando credenciales...`);
+  console.log(`🔑 [AUTH] ENV ADMIN_USERNAME existe: ${!!process.env.ADMIN_USERNAME}`);
+  console.log(`🔑 [AUTH] ENV ADMIN_PASSWORD existe: ${!!process.env.ADMIN_PASSWORD}`);
+  console.log(`🔑 [AUTH] Username esperado: ${credentials.username}`);
+  console.log(`🔑 [AUTH] Username recibido: ${username}`);
+  console.log(`🔑 [AUTH] Password coincide: ${password === credentials.password}`);
+  
+  return username === credentials.username && password === credentials.password;
 }
 
 /**
  * Crea un token de sesión simple
  */
 export function createSessionToken(): string {
+  const { username, secret } = getAdminCredentials();
   const timestamp = Date.now();
-  const data = `${ADMIN_USERNAME}:${timestamp}:${SESSION_SECRET}`;
+  const data = `${username}:${timestamp}:${secret}`;
   // Simple base64 encoding (en producción usar JWT)
   return Buffer.from(data).toString("base64");
 }
@@ -30,6 +46,7 @@ export function createSessionToken(): string {
  */
 export function verifySessionToken(token: string): boolean {
   try {
+    const credentials = getAdminCredentials();
     const decoded = Buffer.from(token, "base64").toString("utf-8");
     const [username, timestamp, secret] = decoded.split(":");
     
@@ -42,7 +59,7 @@ export function verifySessionToken(token: string): boolean {
       return false;
     }
     
-    return username === ADMIN_USERNAME && secret === SESSION_SECRET;
+    return username === credentials.username && secret === credentials.secret;
   } catch {
     return false;
   }
