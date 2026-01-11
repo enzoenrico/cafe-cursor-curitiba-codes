@@ -5,11 +5,12 @@ const SESSION_COOKIE = "cafe-cursor-admin-session";
 
 /**
  * Obtiene las credenciales del admin desde variables de entorno (lectura en runtime)
+ * NOTA: Usamos .trim() para eliminar espacios/saltos de línea que pueden venir en las env vars
  */
 function getAdminCredentials() {
-  const username = process.env.ADMIN_USERNAME || "admin";
-  const password = process.env.ADMIN_PASSWORD || "cafecursor2024";
-  const secret = process.env.SESSION_SECRET || "cafe-cursor-secret-key-2024";
+  const username = (process.env.ADMIN_USERNAME || "admin").trim();
+  const password = (process.env.ADMIN_PASSWORD || "cafecursor2024").trim();
+  const secret = (process.env.SESSION_SECRET || "cafe-cursor-secret-key-2024").trim();
   return { username, password, secret };
 }
 
