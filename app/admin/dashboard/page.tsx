@@ -120,6 +120,11 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleSendEmail = async (userId: string, email: string) => {
+    const locale = confirm(`¿Enviar email en portugués?\n\nOK = Português (pt-BR)\nCancelar = English (en)`) ? "pt-BR" : "en";
+    await executeAction("SEND_CREDIT_EMAIL", { userId, locale });
+  };
+
   // Filtrar datos
   const filteredUsers = data?.eligibleUsers.filter(
     (u) =>
@@ -326,13 +331,23 @@ export default function AdminDashboard() {
                           </>
                         )}
                         {user.hasClaimed && (
-                          <button
-                            onClick={() => handleRevokeCredit(user.id, user.email)}
-                            disabled={actionLoading}
-                            className="rounded bg-red-600 px-2 py-1 text-xs hover:bg-red-700 disabled:opacity-50"
-                          >
-                            Revocar
-                          </button>
+                          <>
+                            <button
+                              onClick={() => handleSendEmail(user.id, user.email)}
+                              disabled={actionLoading}
+                              className="rounded bg-cyan-600 px-2 py-1 text-xs hover:bg-cyan-700 disabled:opacity-50"
+                              title="Enviar email con el link del crédito"
+                            >
+                              📧 Email
+                            </button>
+                            <button
+                              onClick={() => handleRevokeCredit(user.id, user.email)}
+                              disabled={actionLoading}
+                              className="rounded bg-red-600 px-2 py-1 text-xs hover:bg-red-700 disabled:opacity-50"
+                            >
+                              Revocar
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>

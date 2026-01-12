@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAuthenticated } from "@/lib/auth";
+import { sendCreditEmail } from "@/lib/email";
 
 /**
  * POST /api/admin/actions - Ejecutar acciones administrativas
@@ -251,6 +252,56 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           success: true,
           message: `Crédito ${credit.code} eliminado`,
+        });
+      }
+
+      case "SEND_CREDIT_EMAIL": {
+        // Enviar/reenviar email con el link del crédito
+        const { userId, locale } = data;
+
+        const user = await prisma.eligibleUser.findUnique({
+          where: { id: userId },
+          include: { credit: true },
+        });
+
+        if (!user) {
+          return NextResponse.json(
+            { error: "Usuario no encontrado" },
+            { status: 404 }
+          );
+        }
+
+        if (!user.hasClaimed || !user.credit) {
+          return NextResponse.json(
+            { error: "El usuario no tiene crédito asignado" },
+            { status: 400 }
+          );
+        }
+
+        // Enviar email
+        const emailResult = await sendCreditEmail({
+          to: user.email,
+          name: user.name,
+          creditLink: user.credit.link,
+          creditCode: user.credit.code,
+          company: user.company || undefined,
+          isTest: user.credit.isTest,
+          locale: locale || "pt-BR",
+        });
+
+        if (!emailResult.success) {
+          console.error(`❌ [ADMIN] Error enviando email a ${user.email}:`, emailResult.error);
+          return NextResponse.json(
+            { error: `Error enviando email: ${emailResult.error}` },
+            { status: 500 }
+          );
+        }
+
+        console.log(`📧 [ADMIN] Email enviado manualmente a: ${user.email}`);
+
+        return NextResponse.json({
+          success: true,
+          message: `Email enviado a ${user.email}`,
         });
       }
 
