@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Este email no está registrado en el evento Café Cursor. Solo los asistentes aprobados pueden obtener créditos.",
+          error: "Este email no está registrado en el evento Cafe Cursor. Solo los asistentes aprobados pueden obtener créditos.",
           code: "NOT_ELIGIBLE",
         },
         { status: 403 }

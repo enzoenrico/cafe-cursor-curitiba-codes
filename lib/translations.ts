@@ -3,7 +3,7 @@ export type Locale = "pt-BR" | "en";
 export const translations = {
   "pt-BR": {
     // Header
-    title: "Café Cursor",
+    title: "Cafe Cursor",
     subtitle: "Obtenha seu crédito gratuito do Cursor IDE.",
     cta: "Cadastre-se em segundos.",
     
@@ -43,7 +43,7 @@ export const translations = {
     saveLink: "Guarde este link, é único e pessoal.",
     
     // Errors
-    notEligible: "Este email não está cadastrado no evento Café Cursor. Apenas participantes aprovados podem obter créditos.",
+    notEligible: "Este email não está cadastrado no evento Cafe Cursor. Apenas participantes aprovados podem obter créditos.",
     notApproved: "Seu cadastro no evento ainda não foi aprovado. Por favor, entre em contato com o organizador.",
     noCreditsAvailable: "Desculpe, não há créditos disponíveis no momento. Por favor, entre em contato com o organizador.",
     networkError: "Erro de conexão. Por favor, tente novamente.",
@@ -53,14 +53,14 @@ export const translations = {
     
     // Share
     shareOnX: "Compartilhar no X",
-    shareMessage: "🚀 Acabei de ganhar um crédito do @cursor_ai no Café Cursor Floripa! Muito obrigado à comunidade por essa oportunidade incrível de experimentar o melhor editor de código com IA. #CafeCursorFloripa #CursorAI #DevCommunity",
+    shareMessage: "🚀 Acabei de ganhar um crédito do @cursor_ai no Cafe Cursor Floripa! Muito obrigado à comunidade por essa oportunidade incrível de experimentar o melhor editor de código com IA. #CafeCursorFloripa #CursorAI #DevCommunity",
     
     // Email
     emailSent: "📧 Enviamos o crédito para seu email!",
   },
   "en": {
     // Header
-    title: "Café Cursor",
+    title: "Cafe Cursor",
     subtitle: "Get your free Cursor IDE credit.",
     cta: "Register in seconds.",
     
@@ -100,7 +100,7 @@ export const translations = {
     saveLink: "Save this link, it's unique and personal.",
     
     // Errors
-    notEligible: "This email is not registered for Café Cursor event. Only approved attendees can get credits.",
+    notEligible: "This email is not registered for Cafe Cursor event. Only approved attendees can get credits.",
     notApproved: "Your event registration hasn't been approved yet. Please contact the organizer.",
     noCreditsAvailable: "Sorry, no credits are available at the moment. Please contact the organizer.",
     networkError: "Connection error. Please try again.",
@@ -110,7 +110,7 @@ export const translations = {
     
     // Share
     shareOnX: "Share on X",
-    shareMessage: "🚀 Just got a @cursor_ai credit at Café Cursor Floripa! Huge thanks to the community for this amazing opportunity to try the best AI-powered code editor. #CafeCursorFloripa #CursorAI #DevCommunity",
+    shareMessage: "🚀 Just got a @cursor_ai credit at Cafe Cursor Floripa! Huge thanks to the community for this amazing opportunity to try the best AI-powered code editor. #CafeCursorFloripa #CursorAI #DevCommunity",
     
     // Email
     emailSent: "📧 We sent the credit to your email!",

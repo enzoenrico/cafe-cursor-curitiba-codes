@@ -33,7 +33,7 @@ function getResendClient(): Resend | null {
 }
 
 // Email del remitente (debe ser verificado en Resend)
-const FROM_EMAIL = process.env.FROM_EMAIL || "Café Cursor <onboarding@resend.dev>";
+const FROM_EMAIL = process.env.FROM_EMAIL || "Cafe Cursor <onboarding@resend.dev>";
 
 interface SendCreditEmailParams {
   to: string;
@@ -76,8 +76,8 @@ export async function sendCreditEmail({
 
   try {
     const subject = locale === "pt-BR" 
-      ? "🎉 Seu crédito Cursor está aqui! - Café Cursor Floripa"
-      : "🎉 Your Cursor credit is here! - Café Cursor Floripa";
+      ? "🎉 Seu crédito Cursor está aqui! - Cafe Cursor Floripa"
+      : "🎉 Your Cursor credit is here! - Cafe Cursor Floripa";
 
     const html = generateEmailHTML({
       name,
@@ -126,8 +126,8 @@ function generateEmailHTML({
   const texts = {
     greeting: isPtBR ? `Olá, ${name}!` : `Hello, ${name}!`,
     thanks: isPtBR 
-      ? "Obrigado por participar do Café Cursor Floripa!" 
-      : "Thank you for joining Café Cursor Floripa!",
+      ? "Obrigado por participar do Cafe Cursor Floripa!" 
+      : "Thank you for joining Cafe Cursor Floripa!",
     intro: isPtBR
       ? "Estamos muito felizes em ter você na nossa comunidade. Aqui está seu crédito exclusivo do Cursor IDE:"
       : "We're thrilled to have you in our community. Here's your exclusive Cursor IDE credit:",
@@ -162,7 +162,7 @@ function generateEmailHTML({
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Café Cursor - ${texts.yourCredit}</title>
+  <title>Cafe Cursor - ${texts.yourCredit}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0a0a0a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0a0a0a;">
@@ -183,7 +183,7 @@ function generateEmailHTML({
           <tr>
             <td align="center" style="padding-bottom: 8px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">
-                Café Cursor
+                Cafe Cursor
               </h1>
             </td>
           </tr>

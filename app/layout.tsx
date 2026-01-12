@@ -5,12 +5,12 @@ import { LanguageProvider } from "@/components/LanguageContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Café Cursor | Obtenha seu crédito gratuito",
+  title: "Cafe Cursor | Obtenha seu crédito gratuito",
   description: "Cadastre-se para obter seu crédito gratuito do Cursor IDE. Comunidade de desenvolvedores.",
   keywords: ["cursor", "ide", "crédito", "desenvolvedores", "programação"],
-  authors: [{ name: "Café Cursor" }],
+  authors: [{ name: "Cafe Cursor" }],
   openGraph: {
-    title: "Café Cursor | Obtenha seu crédito gratuito",
+    title: "Cafe Cursor | Obtenha seu crédito gratuito",
     description: "Cadastre-se para obter seu crédito gratuito do Cursor IDE",
     type: "website",
   },
