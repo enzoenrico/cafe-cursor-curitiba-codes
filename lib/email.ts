@@ -4,159 +4,159 @@ import { join } from "path";
 
 // Load API key from environment or .env file
 function getResendApiKey(): string | null {
-  // First try from process.env (works in production)
-  if (process.env.RESEND_API_KEY) {
-    return process.env.RESEND_API_KEY;
-  }
-  
-  // Fallback: read directly from .env file (development)
-  const envPath = join(process.cwd(), ".env");
-  if (existsSync(envPath)) {
-    const envContent = readFileSync(envPath, "utf-8");
-    const match = envContent.match(/RESEND_API_KEY=(.+)/);
-    if (match && match[1]) {
-      return match[1].trim();
-    }
-  }
-  
-  return null;
+	// First try from process.env (works in production)
+	if (process.env.RESEND_API_KEY) {
+		return process.env.RESEND_API_KEY;
+	}
+
+	// Fallback: read directly from .env file (development)
+	const envPath = join(process.cwd(), ".env");
+	if (existsSync(envPath)) {
+		const envContent = readFileSync(envPath, "utf-8");
+		const match = envContent.match(/RESEND_API_KEY=(.+)/);
+		if (match && match[1]) {
+			return match[1].trim();
+		}
+	}
+
+	return null;
 }
 
 // Función para obtener cliente Resend (lazy initialization)
 function getResendClient(): Resend | null {
-  const apiKey = getResendApiKey();
-  console.log(`📧 [EMAIL] Verificando API key: ${apiKey ? "✅ Configurada (" + apiKey.substring(0, 10) + "...)" : "❌ No encontrada"}`);
-  if (!apiKey) {
-    return null;
-  }
-  return new Resend(apiKey);
+	const apiKey = getResendApiKey();
+	console.log(`📧 [EMAIL] Verificando API key: ${apiKey ? "✅ Configurada (" + apiKey.substring(0, 10) + "...)" : "❌ No encontrada"}`);
+	if (!apiKey) {
+		return null;
+	}
+	return new Resend(apiKey);
 }
 
 // Email del remitente (debe ser verificado en Resend)
 const FROM_EMAIL = process.env.FROM_EMAIL || "Cafe Cursor <onboarding@resend.dev>";
 
 interface SendCreditEmailParams {
-  to: string;
-  name: string;
-  creditLink: string;
-  creditCode: string;
-  company?: string;
-  isTest?: boolean;
-  locale?: "pt-BR" | "en";
+	to: string;
+	name: string;
+	creditLink: string;
+	creditCode: string;
+	company?: string;
+	isTest?: boolean;
+	locale?: "pt-BR" | "en";
 }
 
 /**
  * Envía el correo de confirmación con el crédito
  */
 export async function sendCreditEmail({
-  to,
-  name,
-  creditLink,
-  creditCode,
-  company,
-  isTest = false,
-  locale = "pt-BR",
+	to,
+	name,
+	creditLink,
+	creditCode,
+	company,
+	isTest = false,
+	locale = "pt-BR",
 }: SendCreditEmailParams): Promise<{ success: boolean; error?: string }> {
-  // Obtener cliente Resend (lazy)
-  const resendClient = getResendClient();
-  
-  // Si no hay Resend configurado, solo logear (modo desarrollo)
-  if (!resendClient) {
-    console.log(`📧 [EMAIL] Modo desarrollo - Email simulado`);
-    console.log(`   📬 Para: ${to}`);
-    console.log(`   👤 Nombre: ${name}`);
-    console.log(`   🎫 Crédito: ${creditCode}`);
-    console.log(`   🔗 Link: ${creditLink}`);
-    console.log(`   🏢 Empresa: ${company || "N/A"}`);
-    console.log(`   🧪 Test: ${isTest}`);
-    console.log(`   🌐 Locale: ${locale}`);
-    console.log(`   ✅ Email simulado con éxito`);
-    return { success: true };
-  }
+	// Obtener cliente Resend (lazy)
+	const resendClient = getResendClient();
 
-  try {
-    const subject = locale === "pt-BR" 
-      ? "🎉 Seu crédito Cursor está aqui! - Cafe Cursor Floripa"
-      : "🎉 Your Cursor credit is here! - Cafe Cursor Floripa";
+	// Si no hay Resend configurado, solo logear (modo desarrollo)
+	if (!resendClient) {
+		console.log(`📧 [EMAIL] Modo desarrollo - Email simulado`);
+		console.log(`   📬 Para: ${to}`);
+		console.log(`   👤 Nombre: ${name}`);
+		console.log(`   🎫 Crédito: ${creditCode}`);
+		console.log(`   🔗 Link: ${creditLink}`);
+		console.log(`   🏢 Empresa: ${company || "N/A"}`);
+		console.log(`   🧪 Test: ${isTest}`);
+		console.log(`   🌐 Locale: ${locale}`);
+		console.log(`   ✅ Email simulado con éxito`);
+		return { success: true };
+	}
 
-    const html = generateEmailHTML({
-      name,
-      creditLink,
-      creditCode,
-      company,
-      isTest,
-      locale,
-    });
+	try {
+		const subject = locale === "pt-BR"
+			? "🎉 Seu crédito Cursor está aqui! - Cafe Cursor Curitiba"
+			: "🎉 Your Cursor credit is here! - Cafe Cursor Curitiba";
 
-    console.log(`📧 [EMAIL] Enviando email real a: ${to}`);
-    
-    const { error } = await resendClient.emails.send({
-      from: FROM_EMAIL,
-      to: [to],
-      subject,
-      html,
-    });
+		const html = generateEmailHTML({
+			name,
+			creditLink,
+			creditCode,
+			company,
+			isTest,
+			locale,
+		});
 
-    if (error) {
-      console.error(`❌ [EMAIL] Error enviando a ${to}:`, error);
-      return { success: false, error: error.message };
-    }
+		console.log(`📧 [EMAIL] Enviando email real a: ${to}`);
 
-    console.log(`✅ [EMAIL] Enviado exitosamente a: ${to}`);
-    return { success: true };
-  } catch (error) {
-    console.error(`❌ [EMAIL] Error inesperado:`, error);
-    return { success: false, error: "Error al enviar el correo" };
-  }
+		const { error } = await resendClient.emails.send({
+			from: FROM_EMAIL,
+			to: [to],
+			subject,
+			html,
+		});
+
+		if (error) {
+			console.error(`❌ [EMAIL] Error enviando a ${to}:`, error);
+			return { success: false, error: error.message };
+		}
+
+		console.log(`✅ [EMAIL] Enviado exitosamente a: ${to}`);
+		return { success: true };
+	} catch (error) {
+		console.error(`❌ [EMAIL] Error inesperado:`, error);
+		return { success: false, error: "Error al enviar el correo" };
+	}
 }
 
 /**
  * Genera el HTML del correo manteniendo la estética de la landing
  */
 function generateEmailHTML({
-  name,
-  creditLink,
-  creditCode,
-  company,
-  isTest,
-  locale,
+	name,
+	creditLink,
+	creditCode,
+	company,
+	isTest,
+	locale,
 }: Omit<SendCreditEmailParams, "to">): string {
-  const isPtBR = locale === "pt-BR";
+	const isPtBR = locale === "pt-BR";
 
-  const texts = {
-    greeting: isPtBR ? `Olá, ${name}!` : `Hello, ${name}!`,
-    thanks: isPtBR 
-      ? "Obrigado por participar do Cafe Cursor Floripa!" 
-      : "Thank you for joining Cafe Cursor Floripa!",
-    intro: isPtBR
-      ? "Estamos muito felizes em ter você na nossa comunidade. Aqui está seu crédito exclusivo do Cursor IDE:"
-      : "We're thrilled to have you in our community. Here's your exclusive Cursor IDE credit:",
-    yourCredit: isPtBR ? "Seu Crédito Cursor" : "Your Cursor Credit",
-    code: isPtBR ? "Código" : "Code",
-    useCredit: isPtBR ? "Usar Meu Crédito" : "Use My Credit",
-    testWarning: isPtBR 
-      ? "⚠️ Este é um crédito de TESTE (não válido para uso real)"
-      : "⚠️ This is a TEST credit (not valid for real use)",
-    howToUse: isPtBR ? "Como usar:" : "How to use:",
-    step1: isPtBR 
-      ? "Clique no botão acima ou copie o link"
-      : "Click the button above or copy the link",
-    step2: isPtBR 
-      ? "Faça login ou crie sua conta no Cursor"
-      : "Sign in or create your Cursor account",
-    step3: isPtBR 
-      ? "O crédito será aplicado automaticamente!"
-      : "The credit will be applied automatically!",
-    questions: isPtBR
-      ? "Dúvidas? Entre em contato com os organizadores do evento."
-      : "Questions? Contact the event organizers.",
-    footer: isPtBR
-      ? "Feito com ☕ por Chris & Alex - Cursor Ambassador Brasil"
-      : "Made with ☕ by Chris & Alex - Cursor Ambassador Brasil",
-    companyLabel: isPtBR ? "Empresa" : "Company",
-  };
+	const texts = {
+		greeting: isPtBR ? `Olá, ${name}!` : `Hello, ${name}!`,
+		thanks: isPtBR
+			? "Obrigado por participar do Cafe Cursor Curitiba!"
+			: "Thank you for joining Cafe Cursor Curitiba!",
+		intro: isPtBR
+			? "Estamos muito felizes em ter você na nossa comunidade. Aqui está seu crédito exclusivo do Cursor IDE:"
+			: "We're thrilled to have you in our community. Here's your exclusive Cursor IDE credit:",
+		yourCredit: isPtBR ? "Seu Crédito Cursor" : "Your Cursor Credit",
+		code: isPtBR ? "Código" : "Code",
+		useCredit: isPtBR ? "Usar Meu Crédito" : "Use My Credit",
+		testWarning: isPtBR
+			? "⚠️ Este é um crédito de TESTE (não válido para uso real)"
+			: "⚠️ This is a TEST credit (not valid for real use)",
+		howToUse: isPtBR ? "Como usar:" : "How to use:",
+		step1: isPtBR
+			? "Clique no botão acima ou copie o link"
+			: "Click the button above or copy the link",
+		step2: isPtBR
+			? "Faça login ou crie sua conta no Cursor"
+			: "Sign in or create your Cursor account",
+		step3: isPtBR
+			? "O crédito será aplicado automaticamente!"
+			: "The credit will be applied automatically!",
+		questions: isPtBR
+			? "Dúvidas? Entre em contato com os organizadores do evento."
+			: "Questions? Contact the event organizers.",
+		footer: isPtBR
+			? "Obrigado Chris & Alex pelo projeto para enviar os créditos e um grande obrigado a você por ter participado!"
+			: "Thank you Chris & Alex for the project to send the credits and a big thank you to you for participating!",
+		companyLabel: isPtBR ? "Empresa" : "Company",
+	};
 
-  return `
+	return `
 <!DOCTYPE html>
 <html lang="${locale}">
 <head>
