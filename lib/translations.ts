@@ -53,7 +53,8 @@ export const translations = {
     
     // Share
     shareOnX: "Compartilhar no X",
-    shareMessage: "🚀 Acabei de ganhar um crédito do @cursor_ai no Cafe Cursor Floripa! Muito obrigado à comunidade por essa oportunidade incrível de experimentar o melhor editor de código com IA. #CafeCursorFloripa #CursorAI #DevCommunity",
+    shareOnLinkedIn: "Compartilhar no LinkedIn",
+    shareMessage: "🚀 Acabei de ganhar um crédito do @cursor_ai no Cafe Cursor Curitiba! Muito obrigado à comunidade por essa oportunidade incrível de experimentar o melhor editor de código com IA. #CafeCursorCuritiba #CursorAI #DevCommunity",
     
     // Email
     emailSent: "📧 Enviamos o crédito para seu email!",
@@ -110,6 +111,7 @@ export const translations = {
     
     // Share
     shareOnX: "Share on X",
+    shareOnLinkedIn: "Share on LinkedIn",
     shareMessage: "🚀 Just got a @cursor_ai credit at Cafe Cursor Floripa! Huge thanks to the community for this amazing opportunity to try the best AI-powered code editor. #CafeCursorFloripa #CursorAI #DevCommunity",
     
     // Email
